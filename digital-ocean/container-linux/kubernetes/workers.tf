@@ -31,6 +31,10 @@ resource "digitalocean_droplet" "workers" {
   tags = [
     "${digitalocean_tag.workers.id}",
   ]
+
+  lifecycle {
+    ignore_changes = ["volume_ids"]
+  }
 }
 
 # Tag to label workers
