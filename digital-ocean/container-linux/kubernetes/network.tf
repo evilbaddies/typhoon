@@ -12,22 +12,12 @@ resource "digitalocean_firewall" "rules" {
     },
     {
       protocol         = "tcp"
-      port_range       = "25"
-      source_addresses = ["0.0.0.0/0", "::/0"]
-    },
-    {
-      protocol         = "tcp"
       port_range       = "80"
       source_addresses = ["0.0.0.0/0", "::/0"]
     },
     {
       protocol         = "tcp"
       port_range       = "443"
-      source_addresses = ["0.0.0.0/0", "::/0"]
-    },
-    {
-      protocol         = "tcp"
-      port_range       = "587"
       source_addresses = ["0.0.0.0/0", "::/0"]
     },
     {
@@ -39,6 +29,16 @@ resource "digitalocean_firewall" "rules" {
       protocol    = "tcp"
       port_range  = "1-65535"
       source_tags = ["${digitalocean_tag.controllers.name}", "${digitalocean_tag.workers.name}"]
+    },
+    {
+      protocol         = "tcp"
+      port_range       = "25"
+      source_addresses = ["0.0.0.0/0", "::/0"]
+    },
+    {
+      protocol         = "tcp"
+      port_range       = "587"
+      source_addresses = ["0.0.0.0/0", "::/0"]
     },
   ]
 
