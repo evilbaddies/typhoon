@@ -15,7 +15,7 @@ resource "digitalocean_droplet" "mail_worker" {
   ssh_keys  = "${var.ssh_fingerprints}"
 
   tags = [
-    "${digitalocean_tag.workers.id}",
+    "mail"
   ]
 
   lifecycle {
