@@ -1,7 +1,7 @@
 resource "digitalocean_firewall" "mail-rules" {
   name = "${var.cluster_name}-mail"
 
-  tags = ["mail"]
+  tags = ["${var.cluster_name}-mail-worker"]
 
   # allow ssh, http/https ingress, and peer-to-peer traffic
   inbound_rule = [

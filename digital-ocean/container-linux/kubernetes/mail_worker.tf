@@ -1,3 +1,8 @@
+# Tag to label workers
+resource "digitalocean_tag" "mail_worker" {
+  name = "${var.cluster_name}-mail-worker"
+}
+
 # Mail worker droplet instance
 resource "digitalocean_droplet" "mail_worker" {
 
@@ -15,7 +20,7 @@ resource "digitalocean_droplet" "mail_worker" {
   ssh_keys  = "${var.ssh_fingerprints}"
 
   tags = [
-    "mail"
+    "${digitalocean_tag.mail_worker.id}"
   ]
 
   lifecycle {
