@@ -1,11 +1,11 @@
 # Mail worker droplet instance
 resource "digitalocean_droplet" "mail_worker" {
 
-  name   = "${var.cluster_name}-mail-worker"
+  name   = "mail.${var.dns_zone}"
   region = "${var.region}"
 
   image = "${var.image}"
-  size  = "${var.worker_type}"
+  size  = "s-1vcpu-1gb"
 
   #network
   ipv6               = true
