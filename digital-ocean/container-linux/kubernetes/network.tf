@@ -30,16 +30,6 @@ resource "digitalocean_firewall" "rules" {
       port_range  = "1-65535"
       source_tags = ["${digitalocean_tag.controllers.name}", "${digitalocean_tag.workers.name}"]
     },
-    {
-      protocol         = "tcp"
-      port_range       = "25"
-      source_addresses = ["0.0.0.0/0", "::/0"]
-    },
-    {
-      protocol         = "tcp"
-      port_range       = "587"
-      source_addresses = ["0.0.0.0/0", "::/0"]
-    },
   ]
 
   # allow all outbound traffic
