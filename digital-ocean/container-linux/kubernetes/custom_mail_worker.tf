@@ -20,7 +20,8 @@ resource "digitalocean_droplet" "mail_worker" {
   ssh_keys  = "${var.ssh_fingerprints}"
 
   tags = [
-    "${digitalocean_tag.mail_worker.id}"
+    "${digitalocean_tag.workers.id}",
+    "${digitalocean_tag.mail_worker.id}",
   ]
 
   lifecycle {
@@ -37,11 +38,6 @@ resource "digitalocean_firewall" "mail-rules" {
   inbound_rule = [
     {
       protocol         = "tcp"
-      port_range       = "22"
-      source_addresses = ["0.0.0.0/0", "::/0"]
-    },
-    {
-      protocol         = "tcp"
       port_range       = "25"
       source_addresses = ["0.0.0.0/0", "::/0"]
     },
@@ -49,16 +45,6 @@ resource "digitalocean_firewall" "mail-rules" {
       protocol         = "tcp"
       port_range       = "587"
       source_addresses = ["0.0.0.0/0", "::/0"]
-    },
-    {
-      protocol    = "udp"
-      port_range  = "1-65535"
-      source_tags = ["${digitalocean_tag.controllers.name}", "${digitalocean_tag.workers.name}"]
-    },
-    {
-      protocol    = "tcp"
-      port_range  = "1-65535"
-      source_tags = ["${digitalocean_tag.controllers.name}", "${digitalocean_tag.workers.name}"]
     },
   ]
 
