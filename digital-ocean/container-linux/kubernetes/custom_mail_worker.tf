@@ -1,3 +1,16 @@
+variable "mail_host_name" {
+  type        = "string"
+  description = "Mail server host name. e.g. mail1 or mail2"
+}
+
+# Add a record to the domain
+resource "digitalocean_record" "mail" {
+  domain = "${var.dns_zone}"
+  name = "${var.mail_host_name}"
+  type   = "A"
+  value  = "${digitalocean_droplet.mail_worker.ipv4_address}"
+}
+
 # Tag to label mail worker
 resource "digitalocean_tag" "mail_worker" {
   name = "${var.cluster_name}-mail-worker"
@@ -6,7 +19,7 @@ resource "digitalocean_tag" "mail_worker" {
 # Mail worker droplet instance
 resource "digitalocean_droplet" "mail_worker" {
 
-  name   = "mail.${var.dns_zone}"
+  name   = "${var.mail_host_name}.${var.dns_zone}"
   region = "${var.region}"
 
   image = "${var.image}"
@@ -20,7 +33,7 @@ resource "digitalocean_droplet" "mail_worker" {
   ssh_keys  = "${var.ssh_fingerprints}"
 
   tags = [
-    "${digitalocean_tag.workers.id}",
+#    "${digitalocean_tag.workers.id}",
     "${digitalocean_tag.mail_worker.id}",
   ]
 
@@ -36,6 +49,11 @@ resource "digitalocean_firewall" "mail-rules" {
 
   # allow ssh, http/https ingress, and peer-to-peer traffic
   inbound_rule = [
+    {
+      protocol         = "tcp"
+      port_range       = "22"
+      source_addresses = ["0.0.0.0/0", "::/0"]
+    },
     {
       protocol         = "tcp"
       port_range       = "25"
