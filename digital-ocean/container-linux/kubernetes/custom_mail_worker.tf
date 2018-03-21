@@ -33,7 +33,7 @@ resource "digitalocean_droplet" "mail_worker" {
   ssh_keys  = "${var.ssh_fingerprints}"
 
   tags = [
-#    "${digitalocean_tag.workers.id}",
+    "${digitalocean_tag.workers.id}",
     "${digitalocean_tag.mail_worker.id}",
   ]
 
@@ -49,11 +49,6 @@ resource "digitalocean_firewall" "mail-rules" {
 
   # allow ssh, http/https ingress, and peer-to-peer traffic
   inbound_rule = [
-    {
-      protocol         = "tcp"
-      port_range       = "22"
-      source_addresses = ["0.0.0.0/0", "::/0"]
-    },
     {
       protocol         = "tcp"
       port_range       = "25"
